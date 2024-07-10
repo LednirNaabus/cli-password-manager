@@ -6,6 +6,6 @@
 **Disclaimer**: This is just a passion project where I aim to learn the best practices in cryptography and password storage practices. 
 
 ### To Do:
-- [  ] Installation
-- [  ] Documentation & How to use
-- [  ] Install project dependencies (`requirements.txt`)
+- [ ] Installation
+- [ ] Documentation & How to use
+- [ ] Install project dependencies (`requirements.txt`)
