@@ -20,10 +20,10 @@
 - Ask for **master password** first
 - Validate the **master password** by hashing and checking with existing hash
 - Input fields for adding entry:
-    - name/entry_name
-    - email
-    - username
-    - password
+    - `name/entry_name`
+    - `email`
+    - `username`
+    - `password`
     - `is_OTP`
     - `category`
 - Encrypt the email, username, password with `master key` and then save the fields into the database.
