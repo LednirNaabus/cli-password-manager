@@ -5,7 +5,7 @@
     - If validated: show saved passwords, otherwise exit
 - Copy passwords to clipboards
 - Can add, edit, view, and delete entries
-- This CLI program can be installed using pip (**Note:** Create an installation script in bash)
+- This CLI program can be installed using `pip` or through `git` (**Note:** Create an installation script in bash)
 - Passwords/entries is saved on a local SQL database
 
 ## Implementation
