@@ -34,7 +34,7 @@ def config():
     res = cur.execute(query)
     print("Table 'master_table' successfully created.")
 
-    query = "CREATE TABLE entries (entry_name TEXT NOT NULL, email TEXT, username TEXT, password TEXT NOT NULL)"
+    query = "CREATE TABLE entries (entry_name TEXT NOT NULL, email TEXT, username TEXT, password TEXT NOT NULL, is_OTP BOOLEAN NOT NULL)"
     res = cur.execute(query)
     print("Table 'entries' successfully created.")
 
