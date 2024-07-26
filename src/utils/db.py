@@ -4,8 +4,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# You can change the values in your .env
 db_name = os.environ["DB_NAME"]
-db_directory = 'databases' # You can change directory name
+db_directory = os.environ["DB_DIRECTORY"]
 
 # Create directory for database
 def make_dir():
