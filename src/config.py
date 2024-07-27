@@ -1,5 +1,6 @@
 # This is the config file
 # This is the first script that runs during first-time installation
+from os.path import isfile
 import sys
 import getpass
 import hashlib
@@ -18,7 +19,11 @@ load_dotenv()
 db_name = os.environ["DB_NAME"]
 db_directory = os.environ["DB_DIRECTORY"]
 
-config_logger = utils.log_util.setup_logger('config_log', 'config.log')
+if os.path.isfile('config.log'):
+    print(f"Config file already exists! Exiting program...\n")
+    sys.exit()
+else:
+    config_logger = utils.log_util.setup_logger('config_log', 'config.log')
 
 def gen_device_secret(length: int = 10) -> str:
     """
