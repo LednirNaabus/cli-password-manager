@@ -1,7 +1,5 @@
 import os, sys
 import sqlite3 as db
-# from utils import log_helpers as lg
-# import utils
 from utils import log_util as lg
 
 db_logger = lg.setup_logger('db_log', 'db.log')
