@@ -9,5 +9,6 @@
 - [x] Start working on the configuration part
     - [ ] Work on adding entries
     - [ ] Work on deleting entries
-    - [ ] Use `argparse`
+    - [x] Use `argparse`
+    - [ ] Use optional args to hide or show logs(?)
 - [ ] Refactor soon
