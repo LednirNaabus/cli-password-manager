@@ -5,17 +5,20 @@ import getpass
 import hashlib
 import string
 import random
-import logging
 import os
 
+# other modules, packages, etc
+import utils
+
 from dotenv import load_dotenv
-from utils.db import DatabaseConfig
 
 load_dotenv()
 
 # You can change the values in your .env
 db_name = os.environ["DB_NAME"]
 db_directory = os.environ["DB_DIRECTORY"]
+
+config_logger = utils.log_util.setup_logger('config_log', 'config.log')
 
 def gen_device_secret(length: int = 10) -> str:
     """
@@ -30,7 +33,7 @@ def gen_device_secret(length: int = 10) -> str:
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
 def config():
-    database = DatabaseConfig(db_directory, db_name)
+    database = utils.DatabaseConfig(db_directory, db_name)
     print("Creating new config file...\n\n", flush=True)
     try:
         database.create_db()
@@ -41,11 +44,11 @@ def config():
 
             query = "CREATE TABLE master_table (masterkey_hash TEXT NOT NULL, device_secret TEXT NOT NULL)"
             res = db_cur.execute(query)
-            print("Table 'master_table' successfully created.", flush=True)
+            config_logger.info("Table 'master_table' successfully created.")
 
             query = "CREATE TABLE entries (entry_name TEXT NOT NULL, email TEXT, username TEXT, password TEXT NOT NULL, is_OTP BOOLEAN NOT NULL)"
             res = db_cur.execute(query)
-            print("Table 'entries' successfully created.", flush=True)
+            config_logger.info("Table 'entries' successfully created.")
 
             master_pass = ""
             print("Note: The master password is the one you will need to remember to access your other passwords.")
@@ -58,18 +61,18 @@ def config():
 
             # hashing the master password
             hashed_mp = hashlib.sha256(master_pass.encode()).hexdigest()
-            print("Hash generated for master password.")
+            config_logger.info("Hash generated for master password.")
 
             # Generate device secret
             dev_sec = gen_device_secret()
-            print("Successfully generated device secret.")
+            config_logger.info("Successfully generated device secret.")
 
             query = "INSERT INTO master_table (masterkey_hash, device_secret) values (?,?)"
             values = (hashed_mp, dev_sec)
             db_cur.execute(query, values)
 
-            print("Successfully inserted master password and device secret to 'master_table'!")
-            print("Configuration done.\n")
+            config_logger.info("Successfully inserted master password and device secret to 'master_table'!")
+            config_logger.info("Configuration done. Closing connection...\n")
             db_cur.close()
     except Exception as e:
         print(f"config.py error: {e}")

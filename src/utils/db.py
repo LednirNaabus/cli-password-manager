@@ -1,20 +1,18 @@
 import os, sys
 import sqlite3 as db
-import logging
+# from utils import log_helpers as lg
+# import utils
+from utils import log_util as lg
+
+db_logger = lg.setup_logger('db_log', 'db.log')
 
 class DatabaseConfig:
     def __init__(self, database_directory: str, database_name: str):
         self.database_directory = database_directory
         self.database_name = database_name
 
-        logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-        self.logger = logging.getLogger(__name__)
+        self.logger = db_logger
 
-    # check dir
-    # make dir
-    # check db file
-    # create db
-    # connect to db
     def dir_exists(self) -> bool:
         self.logger.info(f"Checking if directory '{self.database_directory}' exists.")
         if os.path.exists(self.database_directory):
