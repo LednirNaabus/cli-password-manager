@@ -19,11 +19,21 @@ load_dotenv()
 db_name = os.environ["DB_NAME"]
 db_directory = os.environ["DB_DIRECTORY"]
 
-if os.path.isfile('config.log'):
-    print(f"Config file already exists! Exiting program...\n")
-    sys.exit()
-else:
-    config_logger = utils.log_util.setup_logger('config_log', 'config.log')
+def check_config_log(file: str) -> bool:
+    """
+    Checks 'config.log' inside the directory.
+    Args:
+        file (str, required): String of the file name. Default: 'config.log'.
+    Returns:
+        bool: Whether or not the log file exists.
+    """
+    print("Checking if config file exists...")
+    if os.path.isfile(file):
+        print(f"Config file already exists! Exiting program...\n")
+        return True
+    else:
+        print(f"Config file not found.\n")
+        return False
 
 def gen_device_secret(length: int = 10) -> str:
     """
@@ -38,6 +48,7 @@ def gen_device_secret(length: int = 10) -> str:
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
 def config():
+    config_logger = utils.log_util.setup_logger('config_log', 'config.log')
     database = utils.DatabaseConfig(db_directory, db_name)
     print("Creating new config file...\n\n", flush=True)
     try:
@@ -84,7 +95,10 @@ def config():
         sys.exit()
 
 def main():
-    config()
+    if not check_config_log('config.log'):
+        config()
+    else:
+        sys.exit()
 
 if __name__ == "__main__":
     main()
