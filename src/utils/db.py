@@ -8,8 +8,7 @@ class DatabaseConfig:
     def __init__(self, database_directory: str, database_name: str):
         self.database_directory = database_directory
         self.database_name = database_name
-
-        self.logger = db_logger
+        self.logger = db_logger # logger is instantiated -> will create new db.log file
 
     def dir_exists(self) -> bool:
         self.logger.info(f"Checking if directory '{self.database_directory}' exists.")

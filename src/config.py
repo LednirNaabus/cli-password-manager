@@ -25,14 +25,13 @@ def check_config_log(file: str) -> bool:
     Args:
         file (str, required): String of the file name. Default: 'config.log'.
     Returns:
-        bool: Whether or not the log file exists.
+        bool: Whether or not the log file exists. Returns 'True' if found, 'False' if not found.
     """
     print("Checking if config file exists...")
     if os.path.isfile(file):
-        print(f"Config file already exists! Exiting program...\n")
+        print(f"Existing config file ('config.log') found! Delete existing config file first before creating a new config file.\n")
         return True
     else:
-        print(f"Config file not found.\n")
         return False
 
 def gen_device_secret(length: int = 10) -> str:
@@ -47,13 +46,17 @@ def gen_device_secret(length: int = 10) -> str:
     """
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
-def config():
-    config_logger = utils.log_util.setup_logger('config_log', 'config.log')
-    database = utils.DatabaseConfig(db_directory, db_name)
+def config(config_logger):
+    # if 'config.log' not found, create new one
+    if not check_config_log('config.log'):
+        config_logger = utils.log_util.setup_logger('config_log', 'config.log')
+    else:
+        return
     print("Creating new config file...\n\n", flush=True)
     try:
+        database = utils.DatabaseConfig(db_directory, db_name)
         database.create_db()
-        # note: using context manager autocommits apparently
+        # note: (sqlite3) using context manager autocommits apparently
         # so there's no need to use .commit()
         with database.connect_db() as conn:
             db_cur = conn.cursor()
@@ -94,11 +97,52 @@ def config():
         print(f"config.py error: {e}")
         sys.exit()
 
-def main():
-    if not check_config_log('config.log'):
-        config()
+def delete_config(config_logger):
+    """
+    Will delete the config files except for 'config.log' since 'config.log' also stores the log for file deletion.
+    Args:
+        config_logger (required): Handler for the config file.
+    """
+
+    # will store delete logs to the config.log file
+    config_logger = utils.log_util.setup_logger('config_log', 'config.log')
+    config_logger.warning("You are about to delete existing config files! ('db.log' and 'pw.db')")
+
+    while 1:
+        ans = input("Are you sure? y/N: ")
+        if ans.upper() == "Y":
+            break
+        # default answer: N
+        if ans.upper() == "N" or ans == "":
+            sys.exit(0)
+        else:
+            continue
+
+    if not os.path.exists('databases/pw.db'):
+        print("No database found.")
     else:
-        sys.exit()
+        config_logger.info("Deleting config files...\n")
+        try:
+            config_logger.info(f"Database found: {os.path.abspath('pw.db')}.")
+            config_logger.info("Deleting database config files...")
+            os.remove('databases/pw.db')
+            os.removedirs('databases')
+            config_logger.info("Config files deleted.")
+        except Exception as e:
+            config_logger.error(f"{e}")
+
+def main():
+    cl = None
+    if len(sys.argv) != 2:
+        print("Usage: python config.py [options: new, delete]")
+        sys.exit(0)
+
+    if sys.argv[1] == "new":
+        config(cl)
+    elif sys.argv[1] == "delete":
+        delete_config(cl)
+    else:
+        print("Usage: python config.py [options: new, delete]")
 
 if __name__ == "__main__":
     main()
