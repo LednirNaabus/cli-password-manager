@@ -1,8 +1,12 @@
 import logging
 
-def setup_logger(name, log_file, level=logging.INFO):
+def setup_logger(name: str, log_file: str, level=logging.INFO):
     """
     Sets up a logger for file and console handlers.
+
+    Args:
+        name (str, required): The name of the logger.
+        log_file (str, required): The name of the log file.
     """
 
     base_format = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
