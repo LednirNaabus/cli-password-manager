@@ -29,7 +29,7 @@ def check_config_log(file: str) -> bool:
     """
     print("Checking if config file exists...")
     if os.path.isfile(file):
-        print(f"Existing config file ('config.log') found! Delete existing config file first before creating a new config file.\n")
+        print(f"Existing config file ('config.log') found! Delete existing config file first before creating a new config file. (Hint: try using 'config delete')\n")
         return True
     else:
         return False
