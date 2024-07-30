@@ -1,9 +1,12 @@
 import os, sys
 import sqlite3 as db
-from utils import log_util as lg
+from .log_util import setup_logger
 
-db_logger = lg.setup_logger('db_log', 'db.log')
+db_logger = setup_logger('db_log', 'db.log')
 
+"""
+Class for a database config (sqlite3). A logger is instantiated with it and will also create a new 'db.log' file in the root directory.
+"""
 class DatabaseConfig:
     def __init__(self, database_directory: str, database_name: str):
         self.database_directory = database_directory

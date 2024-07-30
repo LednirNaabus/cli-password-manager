@@ -10,6 +10,7 @@ import os
 
 # other modules, packages, etc
 import utils
+from utils.DatabaseConfig import DatabaseConfig
 
 from dotenv import load_dotenv
 
@@ -54,7 +55,8 @@ def config(config_logger):
         return
     print("Creating new config file...\n\n", flush=True)
     try:
-        database = utils.DatabaseConfig(db_directory, db_name)
+        # database = utils.DatabaseConfig.DatabaseConfig(db_directory, db_name)
+        database = DatabaseConfig(db_directory, db_name)
         database.create_db()
         # note: (sqlite3) using context manager autocommits apparently
         # so there's no need to use .commit()
@@ -106,7 +108,7 @@ def delete_config(config_logger):
 
     # will store delete logs to the config.log file
     config_logger = utils.log_util.setup_logger('config_log', 'config.log')
-    config_logger.warning("You are about to delete existing config files! ('db.log' and 'pw.db')")
+    config_logger.warning("You are about to delete existing config files! ('pw.db')")
 
     while 1:
         ans = input("Are you sure? y/N: ")
