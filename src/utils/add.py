@@ -1,5 +1,8 @@
-from .DatabaseConfig import DatabaseConfig
-from .aesutil import encrypt, decrypt
+# from .DatabaseConfig import DatabaseConfig
+# import DatabaseConfig
+import utils.DatabaseConfig as DatabaseConfig
+# from .aesutil import encrypt, decrypt
+import utils.aesutil as aesutil
 from getpass import getpass
 
 from Crypto.Protocol.KDF import PBKDF2
@@ -20,9 +23,10 @@ def compute_masterkey(master_passwd, ds):
 
 def check_entry(entry_name, email, username, password, is_OTP: bool, category):
     # database = DatabaseConfig.DatabaseConfig()
-    database = DatabaseConfig()
+    database = DatabaseConfig.DatabaseConfig(db_directory, db_name)
     db_conn = database.create_db()
-    cursor = db_conn.cursor()
+    print(db_conn)
+    # cursor = db_conn.cursor()
     # if check_entry(entry_name, email, username, password, is_OTP, category):
         # print("Entry already exists!")
         # return

@@ -1,8 +1,8 @@
 import os, sys
 import sqlite3 as db
-from .log_util import setup_logger
+import utils.log_util as log_util
 
-db_logger = setup_logger('db_log', 'db.log')
+db_logger = log_util.setup_logger('db_log', 'db.log')
 
 """
 Class for a database config (sqlite3). A logger is instantiated with it and will also create a new 'db.log' file in the root directory.
@@ -11,7 +11,7 @@ class DatabaseConfig:
     def __init__(self, database_directory: str, database_name: str):
         self.database_directory = database_directory
         self.database_name = database_name
-        self.logger = db_logger # logger is instantiated -> will create new db.log file
+        self.logger = db_logger
 
     def dir_exists(self) -> bool:
         self.logger.info(f"Checking if directory '{self.database_directory}' exists.")
