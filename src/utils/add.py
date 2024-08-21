@@ -1,5 +1,5 @@
-from .DatabaseConfig import DatabaseConfig
-from .aesutil import encrypt, decrypt
+import utils.DatabaseConfig as DatabaseConfig
+import utils.aesutil as aesu
 from getpass import getpass
 
 from Crypto.Protocol.KDF import PBKDF2
@@ -19,8 +19,9 @@ def compute_masterkey(master_passwd, ds):
     return key
 
 def check_entry(entry_name, email, username, password, is_OTP: bool, category):
-    database = DatabaseConfig(db_directory, db_name)
-    db_conn = database.create_db()
+    database = DatabaseConfig.DatabaseConfig(db_directory, db_name)
+    # db_conn = database.create_db()
+    db_conn = database.connect_db()
     print(db_conn)
     # cursor = db_conn.cursor()
     # if check_entry(entry_name, email, username, password, is_OTP, category):
@@ -30,4 +31,3 @@ def check_entry(entry_name, email, username, password, is_OTP: bool, category):
     # password = getpass("Password: ")
 
     # master_k = compute_masterkey()
-check_entry("s", "s", "s", "s", True, "s")
