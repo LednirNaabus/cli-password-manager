@@ -55,7 +55,6 @@ def config(config_logger):
         return
     print("Creating new config file...\n\n", flush=True)
     try:
-        # database = utils.DatabaseConfig.DatabaseConfig(db_directory, db_name)
         database = DatabaseConfig(db_directory, db_name)
         database.create_db()
         # note: (sqlite3) using context manager autocommits apparently
@@ -101,20 +100,18 @@ def config(config_logger):
 
 def delete_config(config_logger):
     """
-    Will delete the config files except for 'config.log' since 'config.log' also stores the log for file deletion.
+    Will delete the config files except for 'config.log' since 'config.log' also stores the log for file deletion. Default answer is 'N'.
     Args:
         config_logger (required): Handler for the config file.
     """
 
-    # will store delete logs to the config.log file
-    config_logger = utils.log_util.setup_logger('config_log', 'config.log')
+    config_logger = utils.log_util.setup_logger('deletion_log', 'deletion.log')
     config_logger.warning("You are about to delete existing config files! ('pw.db')")
 
     while 1:
         ans = input("Are you sure? y/N: ")
         if ans.upper() == "Y":
             break
-        # default answer: N
         if ans.upper() == "N" or ans == "":
             sys.exit(0)
         else:
@@ -129,6 +126,8 @@ def delete_config(config_logger):
             config_logger.info("Deleting database config files...")
             os.remove('databases/pw.db')
             os.removedirs('databases')
+            config_logger.info(f"Config file found: {os.path.abspath('config.log')}.")
+            os.remove('config.log')
             config_logger.info("Config files deleted.")
         except Exception as e:
             config_logger.error(f"{e}")
