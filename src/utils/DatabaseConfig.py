@@ -1,8 +1,8 @@
 import os, sys
 import sqlite3 as db
-import utils.log_util as log_util
+from .log_util import setup_logger
 
-db_logger = log_util.setup_logger('db_log', 'db.log')
+db_logger = setup_logger('db_log', 'db.log')
 
 """
 Class for a database config (sqlite3). A logger is instantiated with it and will also create a new 'db.log' file in the root directory.
