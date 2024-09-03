@@ -66,7 +66,7 @@ def config(config_logger):
             res = db_cur.execute(query)
             config_logger.info("Table 'master_table' successfully created.")
 
-            query = "CREATE TABLE entries (entry_name TEXT NOT NULL, email TEXT, username TEXT, password TEXT NOT NULL, is_OTP BOOLEAN NOT NULL)"
+            query = "CREATE TABLE entries (entry_name TEXT NOT NULL, category TEXT NOT NULL, email TEXT, username TEXT, password TEXT NOT NULL, is_OTP BOOLEAN NOT NULL)"
             res = db_cur.execute(query)
             config_logger.info("Table 'entries' successfully created.")
 

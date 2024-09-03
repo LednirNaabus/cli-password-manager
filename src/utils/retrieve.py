@@ -58,6 +58,6 @@ def get_entries(master_passwd, ds, search_query, decrypt_pass=False):
             
         if decrypt_pass and len(res) == 1:
             master_key = compute_masterkey(master_passwd, ds)
-            decrypted = aesu.decrypt(key=master_key, source=res[0][4], keyType="bytes")
+            decrypted = aesu.decrypt(key=master_key, source=res[0][5], keyType="bytes")
             print("Password copied to clipboard.")
             pyperclip.copy(decrypted.decode())

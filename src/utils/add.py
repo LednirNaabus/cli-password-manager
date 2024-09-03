@@ -18,13 +18,13 @@ def compute_masterkey(master_passwd, ds):
     key = PBKDF2(passwd, salt, 32, count=1000000, hmac_hash_module=SHA512)
     return key
 
-def check_entry(entry_name, email, username, is_OTP):
+def check_entry(entry_name, category, email, username, is_OTP):
     database = DatabaseConfig.DatabaseConfig(db_directory, db_name)
     db_conn = database.connect_db()
     print(db_conn)
     db_curr = db_conn.cursor()
     is_OTP = 1 # default
-    q = f'SELECT * FROM entries WHERE entry_name="{entry_name}" AND email="{email}" AND username="{username}" AND is_OTP="{is_OTP}"'
+    q = f'SELECT * FROM entries WHERE entry_name="{entry_name}" AND category="{category}" AND email="{email}" AND username="{username}" AND is_OTP="{is_OTP}"'
     db_curr.execute(q)
     results = db_curr.fetchall()
 
@@ -34,8 +34,8 @@ def check_entry(entry_name, email, username, is_OTP):
     db_conn.close()
     return False
 
-def add_entry(master_pass, ds, entry_name, email, username, is_OTP):
-    if check_entry(entry_name, email, username, is_OTP):
+def add_entry(master_pass, ds, entry_name, category, email, username, is_OTP):
+    if check_entry(entry_name, category, email, username, is_OTP):
         print(f"Entry already exists")
         return
 
@@ -47,7 +47,7 @@ def add_entry(master_pass, ds, entry_name, email, username, is_OTP):
     database = DatabaseConfig.DatabaseConfig(db_directory, db_name)
     with database.connect_db() as conn:
         db_curr = conn.cursor()
-        q = "INSERT INTO entries (entry_name, email, username, password, is_OTP) VALUES (?, ?, ?, ?, ?)"
-        val = (entry_name, email, username, is_OTP, encrypted)
+        q = "INSERT INTO entries (entry_name, category, email, username, password, is_OTP) VALUES (?, ?, ?, ?, ?, ?)"
+        val = (entry_name, category, email, username, is_OTP, encrypted)
         db_curr.execute(q, val)
         print("Added entry.")

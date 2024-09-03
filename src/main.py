@@ -17,6 +17,7 @@ db_directory = os.environ["DB_DIRECTORY"]
 parser = argparse.ArgumentParser(description='Description')
 parser.add_argument('option', help='(a)dd')
 parser.add_argument('-n', '--name', help='Entry name (site, etc.)')
+parser.add_argument('-t', '--type', help='Category/Type of entry (email, wifi password, credit card credentials, etc.)')
 parser.add_argument('-e', '--email', help='Email')
 parser.add_argument('-u', '--username', help='Username')
 parser.add_argument('-o', '--otp', help='Has OTP enabled (1 or 0)')
@@ -41,9 +42,11 @@ def auth():
 
 def main():
     if args.option in ["add", "a"]:
-        if args.name == None or args.email == None or args.username == None or args.otp == None:
+        if args.name == None or args.type == None or args.email == None or args.username == None or args.otp == None:
             if args.name == None:
                 print("Entry name (-n) required.")
+            if args.type == None:
+                print("Category/Type (-t) required.")
             if args.email == None:
                 print("Email (-e) required.")
             if args.username == None:
@@ -53,7 +56,7 @@ def main():
             return
         res = auth()
         if res is not None:
-            add.add_entry(res[0], res[1], args.name, args.email, args.username, args.otp)
+            add.add_entry(res[0], res[1], args.name, args.type, args.email, args.username, args.otp)
 
     if args.option in ["extract", "e"]:
         res = auth()
@@ -61,6 +64,8 @@ def main():
 
         if args.name is not None:
             search["entry_name"] = args.name
+        if args.type is not None:
+            search["type"] = args.type
         if args.email is not None:
             search["email"] = args.email
         if args.username is not None:
