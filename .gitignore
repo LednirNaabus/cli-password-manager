@@ -1,0 +1,7 @@
+*.egg-info/
+__pycache__/
+databases/
+tests/
+.env
+note.md
+*.log
