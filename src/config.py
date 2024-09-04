@@ -1,6 +1,5 @@
 # This is the config file
 # This is the first script that runs during first-time installation
-from os.path import isfile
 import sys
 import getpass
 import hashlib
@@ -48,7 +47,9 @@ def gen_device_secret(length: int = 10) -> str:
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
 def config(config_logger):
-    # if 'config.log' not found, create new one
+    """
+    If 'config.log' not found, create new one
+    """
     if not check_config_log('config.log'):
         config_logger = utils.log_util.setup_logger('config_log', 'config.log')
     else:
@@ -57,8 +58,10 @@ def config(config_logger):
     try:
         database = DatabaseConfig(db_directory, db_name)
         database.create_db()
-        # note: (sqlite3) using context manager autocommits apparently
-        # so there's no need to use .commit()
+        """
+        Note: (sqlite3) using context manager autocommits apparently
+        Therefore there is no need to use .commit().
+        """
         with database.connect_db() as conn:
             db_cur = conn.cursor()
 
@@ -79,11 +82,9 @@ def config(config_logger):
                     break
                 print("Please try again.")
 
-            # hashing the master password
             hashed_mp = hashlib.sha256(master_pass.encode()).hexdigest()
             config_logger.info("Hash generated for master password.")
 
-            # Generate device secret
             dev_sec = gen_device_secret()
             config_logger.info("Successfully generated device secret.")
 
@@ -128,6 +129,8 @@ def delete_config(config_logger):
             os.removedirs('databases')
             config_logger.info(f"Config file found: {os.path.abspath('config.log')}.")
             os.remove('config.log')
+            config_logger.info(f"Config file found: {os.path.abspath('db.log')}.")
+            os.remove('db.log')
             config_logger.info("Config files deleted.")
         except Exception as e:
             config_logger.error(f"{e}")
