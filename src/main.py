@@ -15,7 +15,8 @@ db_name = os.environ["DB_NAME"]
 db_directory = os.environ["DB_DIRECTORY"]
 
 parser = argparse.ArgumentParser(description='Description')
-parser.add_argument('option', help='(a)dd')
+parser.add_argument('add', help='(a)dd new entry')
+parser.add_argument('extract', help='(e)xtract/search for entry')
 parser.add_argument('-n', '--name', help='Entry name (site, etc.)')
 parser.add_argument('-t', '--type', help='Category/Type of entry (email, wifi password, credit card credentials, etc.). This argument can also act as a short note or description of your entry. Remember to enclose them with quotation marks.')
 parser.add_argument('-e', '--email', help='Email')
