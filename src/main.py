@@ -17,7 +17,7 @@ db_directory = os.environ["DB_DIRECTORY"]
 parser = argparse.ArgumentParser(description='Description')
 parser.add_argument('option', help='(a)dd')
 parser.add_argument('-n', '--name', help='Entry name (site, etc.)')
-parser.add_argument('-t', '--type', help='Category/Type of entry (email, wifi password, credit card credentials, etc.). This argument can also act as a short note or description of your entry.')
+parser.add_argument('-t', '--type', help='Category/Type of entry (email, wifi password, credit card credentials, etc.). This argument can also act as a short note or description of your entry. Remember to enclose them with quotation marks.')
 parser.add_argument('-e', '--email', help='Email')
 parser.add_argument('-u', '--username', help='Username')
 parser.add_argument('-o', '--otp', help='Has OTP enabled (1 or 0)')
